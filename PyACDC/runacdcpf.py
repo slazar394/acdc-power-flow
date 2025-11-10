@@ -159,8 +159,8 @@ def runacdcpf(caseac='case5_stagg', casedc='case5_stagg_MTDCslack',
 
     bdci = busdc[:, BUSAC_I].astype(int) - 1
     cdci = np.where(convdc[:, CONV_BUS] != 0)[0]
-    slackdc = convdc[convdc[:, CONVTYPE_DC] == DCSLACK, CONV_BUS].astype(int) - 1
-    droopdc = convdc[convdc[:, CONVTYPE_DC] == DCDROOP, CONV_BUS].astype(int) - 1
+    slackdc = convdc[convdc[:, CONVTYPE_DC] == DCSLACK][:, CONV_BUS].astype(int) - 1
+    droopdc = convdc[convdc[:, CONVTYPE_DC] == DCDROOP][:, CONV_BUS].astype(int) - 1
     ngriddc = int(np.max(busdc[:, GRIDDC]))
 
     # Violation check

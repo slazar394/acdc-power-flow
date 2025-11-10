@@ -142,28 +142,29 @@ def calcslackdroop(Pcspec, Qsspec, Vs, Vf, Vc, Ztf, Bf, Zc, tol, itmax):
         J = lil_matrix((4 * ng, 4 * ng))
 
         # Jacobian matrix elements
-        J[i1, i1] = np.diag(-Qc - Vcm ** 2 * Bc)  # J11
-        J[i1, i2] = np.diag((Qc + Vcm ** 2 * Bc) * (Ztf != 0))  # J12
-        J[i1, i3] = np.diag(Pc + Vcm ** 2 * Gc)  # J13
-        J[i1, i4] = np.diag((Pc - Vcm ** 2 * Gc) * (Ztf != 0))  # J14
+        # For sparse matrices, J[i, i] expects a 1D array for diagonal elements
+        J[i1, i1] = -Qc - Vcm ** 2 * Bc  # J11
+        J[i1, i2] = (Qc + Vcm ** 2 * Bc) * (Ztf != 0)  # J12
+        J[i1, i3] = Pc + Vcm ** 2 * Gc  # J13
+        J[i1, i4] = (Pc - Vcm ** 2 * Gc) * (Ztf != 0)  # J14
 
         # Only included without transformer
-        J[i2, i1] = np.diag((-Ps - Vsm ** 2 * Gc) * (Ztf == 0))  # J21
-        J[i2, i3] = np.diag((Qs - Vsm ** 2 * (Bc + Bf)) * (Ztf == 0))  # J23
+        J[i2, i1] = (-Ps - Vsm ** 2 * Gc) * (Ztf == 0)  # J21
+        J[i2, i3] = (Qs - Vsm ** 2 * (Bc + Bf)) * (Ztf == 0)  # J23
 
         # Only included with transformer
-        J[i2, i2] = np.diag((-Ps - Vsm ** 2 * Gtf) * (Ztf != 0))  # J22
-        J[i2, i4] = np.diag((Qs - Vsm ** 2 * Btf) * (Ztf != 0))  # J24
+        J[i2, i2] = (-Ps - Vsm ** 2 * Gtf) * (Ztf != 0)  # J22
+        J[i2, i4] = (Qs - Vsm ** 2 * Btf) * (Ztf != 0)  # J24
 
-        J[i3, i1] = np.diag((Qcf - Vfm ** 2 * Bc) * (Ztf != 0))  # J31
-        J[i3, i2] = np.diag((-Qcf + Qsf + Vfm ** 2 * (Bc + Btf)) * (Ztf != 0))  # J32
-        J[i3, i3] = np.diag((Pcf + Vfm ** 2 * Gc) * (Ztf != 0))  # J33
-        J[i3, i4] = np.diag((Pcf - Psf - Vfm ** 2 * (Gc + Gtf)) * (Ztf != 0))  # J34
+        J[i3, i1] = (Qcf - Vfm ** 2 * Bc) * (Ztf != 0)  # J31
+        J[i3, i2] = (-Qcf + Qsf + Vfm ** 2 * (Bc + Btf)) * (Ztf != 0)  # J32
+        J[i3, i3] = (Pcf + Vfm ** 2 * Gc) * (Ztf != 0)  # J33
+        J[i3, i4] = (Pcf - Psf - Vfm ** 2 * (Gc + Gtf)) * (Ztf != 0)  # J34
 
-        J[i4, i1] = np.diag((-Pcf - Vfm ** 2 * Gc) * (Ztf != 0))  # J41
-        J[i4, i2] = np.diag((Pcf - Psf + Vfm ** 2 * (Gc + Gtf)) * (Ztf != 0))  # J42
-        J[i4, i3] = np.diag((Qcf - Vfm ** 2 * Bc) * (Ztf != 0))  # J43
-        J[i4, i4] = np.diag((Qcf - Qsf + Vfm ** 2 * (Bc + Btf + 2 * Bf)) * (Ztf != 0))  # J44
+        J[i4, i1] = (-Pcf - Vfm ** 2 * Gc) * (Ztf != 0)  # J41
+        J[i4, i2] = (Pcf - Psf + Vfm ** 2 * (Gc + Gtf)) * (Ztf != 0)  # J42
+        J[i4, i3] = (Qcf - Vfm ** 2 * Bc) * (Ztf != 0)  # J43
+        J[i4, i4] = (Qcf - Qsf + Vfm ** 2 * (Bc + Btf + 2 * Bf)) * (Ztf != 0)  # J44
 
         # Remove rows and columns of transformerless buses
         rows_to_keep = np.concatenate([i1, i2[tf1i], i3[tf1i], i4[tf1i]])

@@ -37,6 +37,8 @@ def test_acdcpf(save_results=True, output_file='pyacdc_results.pkl'):
             'Cases/PowerFlowDC/case5_stagg_MTDCslack',
             mdopt
         )
+        print(resultsac)
+        print(resultsdc)
         results['test1_slack'] = {
             'resultsac': resultsac,
             'resultsdc': resultsdc,

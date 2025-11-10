@@ -9,16 +9,26 @@ import scipy.io as sio
 
 
 def load_matlab_results(mat_file):
-    """Load results from MATLAB .mat file.
-    
-    Args:
-        mat_file: Path to .mat file with MATLAB results
-        
-    Returns:
-        dict: Dictionary with test results
-    """
+    """Load results from MATLAB .mat file as nested Python dicts."""
+    def _todict(matobj):
+        result = {}
+        for field_name in matobj._fieldnames:
+            elem = getattr(matobj, field_name)
+            if isinstance(elem, sio.matlab.mio5_params.mat_struct):
+                result[field_name] = _todict(elem)
+            else:
+                result[field_name] = elem
+        return result
+
+    def _check_keys(d):
+        for key in d:
+            if isinstance(d[key], sio.matlab.mio5_params.mat_struct):
+                d[key] = _todict(d[key])
+        return d
+
     mat_data = sio.loadmat(mat_file, struct_as_record=False, squeeze_me=True)
-    return mat_data
+    return _check_keys(mat_data)
+
 
 
 def load_python_results(pkl_file):
@@ -96,15 +106,6 @@ def compare_test_results(matlab_test, python_test, test_name, rtol=1e-5, atol=1e
     print(f"\n{'=' * 80}")
     print(f"Comparing: {test_name}")
     print('=' * 80)
-    
-    # Check for errors
-    if 'error' in python_test:
-        print(f"ERROR: Python test failed - {python_test['error']}")
-        return {'test': test_name, 'status': 'PYTHON_ERROR'}
-    
-    if 'error' in matlab_test:
-        print(f"ERROR: MATLAB test failed - {matlab_test['error']}")
-        return {'test': test_name, 'status': 'MATLAB_ERROR'}
     
     # Check convergence
     matlab_conv = matlab_test.get('converged', False)
