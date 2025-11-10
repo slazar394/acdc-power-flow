@@ -9,10 +9,10 @@ McGraw-Hill, 1968.
 MATPOWER case file data provided by Jef Beerten
 Converted from MATLAB to Python by Lazar Scekic
 """
-import numpy as np
 
 
 def case5_stagg():
+    import numpy as np
     """Returns power flow data for 5 bus system.
     
     Returns:
