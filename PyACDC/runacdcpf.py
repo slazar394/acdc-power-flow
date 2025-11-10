@@ -653,7 +653,7 @@ def runacdcpf(caseac='case5_stagg', casedc='case5_stagg_MTDCslack',
 
     # Print results
     if output:
-        printpf(baseMVA, bus, gen, branch, [], converged, timecalc)
+        printpf(baseMVA, bus, gen, branch, None, converged, timecalc)
         printdcpf(busdc, convdc, branchdc)
 
     # Output results

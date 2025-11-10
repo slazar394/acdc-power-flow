@@ -17,7 +17,6 @@ MATPOWER case file data provided by Bruce Wollenberg and adapted for use with
 MatACDC by Jef Beerten.
 Converted from MATLAB to Python by Lazar Scekic
 """
-import numpy as np
 
 
 def case24_ieee_rts1996_3zones_inf():
@@ -26,6 +25,8 @@ def case24_ieee_rts1996_3zones_inf():
     Returns:
         tuple: (baseMVA, bus, gen, branch)
     """
+    import numpy as np
+
     baseMVA = 100
 
     # bus data

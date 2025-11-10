@@ -70,6 +70,7 @@ def loadcasedc(casefile):
                     s = result
                 else:
                     baseMVAac, baseMVAdc, pol, busdc, convdc, branchdc = result
+
                     s = {
                         'baseMVAac': baseMVAac,
                         'baseMVAdc': baseMVAdc,
@@ -94,12 +95,29 @@ def loadcasedc(casefile):
 
     mpc = s.copy()
 
-    # Add voltage droop parameters if not defined
-    if mpc['convdc'].shape[1] < 24:
-        ii = 24 - mpc['convdc'].shape[1]
+    # Add voltage droop parameters and output columns if not defined
+    # Need 34 columns total (0-33): 24 input + 10 output fields
+    if mpc['convdc'].shape[1] < 34:
+        ii = 34 - mpc['convdc'].shape[1]
         mpc['convdc'] = np.column_stack([
             mpc['convdc'],
             np.zeros((mpc['convdc'].shape[0], ii))
+        ])
+
+    # Ensure busdc has CDC column (index 8)
+    if mpc['busdc'].shape[1] < 9:
+        ii = 9 - mpc['busdc'].shape[1]
+        mpc['busdc'] = np.column_stack([
+            mpc['busdc'],
+            np.zeros((mpc['busdc'].shape[0], ii))
+        ])
+
+    # Ensure branchdc has output columns PFDC and PTDC (indices 9-10)
+    if mpc['branchdc'].shape[1] < 11:
+        ii = 11 - mpc['branchdc'].shape[1]
+        mpc['branchdc'] = np.column_stack([
+            mpc['branchdc'],
+            np.zeros((mpc['branchdc'].shape[0], ii))
         ])
 
     return mpc

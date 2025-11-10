@@ -5,8 +5,6 @@ Can be used together with dc case files "case5_stagg_....py"
 MatACDC - Copyright (C) 2012 Jef Beerten, KU Leuven
 Converted from MATLAB to Python by Lazar Scekic
 """
-import numpy as np
-
 
 def case3_inf():
     """Returns power flow data for 3 infinite bus system.
@@ -14,6 +12,8 @@ def case3_inf():
     Returns:
         tuple: (baseMVA, bus, gen, branch)
     """
+    import numpy as np
+
     baseMVA = 100
     
     # bus data

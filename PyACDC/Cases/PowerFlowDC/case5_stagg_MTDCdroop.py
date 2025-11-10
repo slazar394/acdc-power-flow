@@ -11,7 +11,6 @@ Powertech2011, Trondheim, Norway, Jun 2011.
 MatACDC - Copyright (C) 2012 Jef Beerten, KU Leuven
 Converted from MATLAB to Python by Lazar Scekic
 """
-import numpy as np
 
 
 def case5_stagg_MTDCdroop():
@@ -20,6 +19,8 @@ def case5_stagg_MTDCdroop():
     Returns:
         tuple: (baseMVAac, baseMVAdc, pol, busdc, convdc, branchdc)
     """
+    import numpy as np
+
     baseMVAac = 100
     baseMVAdc = 100
     pol = 2  # numbers of poles (1=monopolar grid, 2=bipolar grid)

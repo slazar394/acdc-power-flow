@@ -6,7 +6,6 @@ Can be used together with ac case files "case24_ieee_rts1996_....py"
 MatACDC - Copyright (C) 2012 Jef Beerten, KU Leuven
 Converted from MATLAB to Python by Lazar Scekic
 """
-import numpy as np
 
 
 def case24_ieee_rts1996_MTDC():
@@ -15,6 +14,8 @@ def case24_ieee_rts1996_MTDC():
     Returns:
         tuple: (baseMVAac, baseMVAdc, pol, busdc, convdc, branchdc)
     """
+    import numpy as np
+
     baseMVAac = 100
     baseMVAdc = 100
     pol = 2  # numbers of poles (1=monopolar grid, 2=bipolar grid)
